@@ -5,10 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(value = {ElementType.CONSTRUCTOR,ElementType.TYPE})
+@Target(value = {ElementType.CONSTRUCTOR ,ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MonotoringLog {
+public @interface Logged {
 
-	Class<?> value() default MonotoringLog.class;
+	Class<?> value() default Logged.class;
 	
 }

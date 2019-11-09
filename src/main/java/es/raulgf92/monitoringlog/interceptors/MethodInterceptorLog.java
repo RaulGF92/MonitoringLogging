@@ -18,8 +18,8 @@ import es.raulgf92.monitoringlog.interceptors.thread.LoggerThreadPool;
 import es.raulgf92.monitoringlog.model.FunctionInfo;
 
 @Aspect
-@EnableAspectJAutoProxy(proxyTargetClass = true)
 @Configuration
+@EnableAspectJAutoProxy(proxyTargetClass = false)
 public class MethodInterceptorLog {
 	
 	@Autowired
@@ -41,7 +41,7 @@ public class MethodInterceptorLog {
 	}
 	
 	// TODO: CAMBIAR EL PATH PARA CUANDO TENGA UNO FIJO
-	@Around("execution(public * ((@es.capgmeni.pruebas.monotoringlog.annotations.MonotoringLog *)+).*(..))")
+	@Around("execution(public * ((@es.raulgf92.monitoringlog.annotations.Logged *)+).*(..))")
 	public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
 		Object response = null;
 		String identificator = this.getUniqueIdentificator();

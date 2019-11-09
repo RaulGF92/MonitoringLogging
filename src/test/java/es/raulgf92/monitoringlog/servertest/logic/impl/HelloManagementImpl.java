@@ -3,7 +3,7 @@ package es.raulgf92.monitoringlog.servertest.logic.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import es.raulgf92.monitoringlog.annotations.MonotoringLog;
+import es.raulgf92.monitoringlog.annotations.Logged;
 import es.raulgf92.monitoringlog.servertest.DAOException;
 import es.raulgf92.monitoringlog.servertest.dataaccess.api.HelloDAO;
 import es.raulgf92.monitoringlog.servertest.dataaccess.api.entities.UserEntity;
@@ -12,7 +12,7 @@ import es.raulgf92.monitoringlog.servertest.logic.api.model.User;
 import es.raulgf92.monitoringlog.servertest.service.api.dto.RequestHelloDto;
 
 @Component("HelloManagement")
-@MonotoringLog
+@Logged
 public class HelloManagementImpl implements HelloManagement {
 
 	@Autowired

@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import es.raulgf92.monitoringlog.annotations.MonotoringLog;
+import es.raulgf92.monitoringlog.annotations.Logged;
+import es.raulgf92.monitoringlog.annotations.monitoringlogui.MonitoringLogUI;
+import es.raulgf92.monitoringlog.annotations.monitoringlogui.SoftwareLayer;
 import es.raulgf92.monitoringlog.servertest.DAOException;
 import es.raulgf92.monitoringlog.servertest.logic.api.HelloManagement;
 import es.raulgf92.monitoringlog.servertest.logic.api.model.User;
@@ -15,7 +17,7 @@ import es.raulgf92.monitoringlog.servertest.service.api.dto.RequestHelloDto;
 import es.raulgf92.monitoringlog.servertest.service.api.dto.ResponseHelloDto;
 
 @Component("HelloController")
-@MonotoringLog
+@Logged
 public class HelloControllerImpl implements HelloController {
 
 	@Autowired

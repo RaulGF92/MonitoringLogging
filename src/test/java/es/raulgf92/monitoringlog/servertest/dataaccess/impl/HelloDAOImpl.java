@@ -7,14 +7,14 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
 
-import es.raulgf92.monitoringlog.annotations.MonotoringLog;
+import es.raulgf92.monitoringlog.annotations.Logged;
 import es.raulgf92.monitoringlog.servertest.DAOException;
 import es.raulgf92.monitoringlog.servertest.dataaccess.api.HelloDAO;
 import es.raulgf92.monitoringlog.servertest.dataaccess.api.entities.UserEntity;
 
 
 @Component("HelloDAO")
-@MonotoringLog
+@Logged
 public class HelloDAOImpl implements HelloDAO {
 
 	ArrayList<UserEntity> users;
