@@ -58,6 +58,73 @@ public class HelloControllerImpl implements HelloController {
 
 4. Comprobar resultado
 
+   ````json
+   {
+     "identificator": "17bbc277-cea4-48d1-a821-dae8829482f2",
+     "executionIdentificator": null,
+     "signature": {
+       "name": "sayHello",
+       "classContainer": {
+         "fields": [],
+         "methods": [
+           {
+             "name": "sayHello"
+           },
+           {
+             "name": "wait"
+           },
+           {
+             "name": "wait"
+           },
+           {
+             "name": "wait"
+           },
+           {
+             "name": "equals"
+           },
+           {
+             "name": "toString"
+           },
+           {
+             "name": "hashCode"
+           },
+           {
+             "name": "getClass"
+           },
+           {
+             "name": "notify"
+           },
+           {
+             "name": "notifyAll"
+           }
+         ],
+         "anotations": [
+           {
+             "name": "org.springframework.stereotype.Component"
+           },
+           {
+             "name": "es.capgmeni.pruebas.monotoringlog.annotations.MonotoringLog"
+           }
+         ],
+         "name": "es.capgmeni.pruebas.monotoringlog.servertest.service.impl.HelloControllerImpl"
+       }
+     },
+     "args": [
+       {
+         "email": "raulgf92@gmail.com"
+       }
+     ],
+     "location": null,
+     "error": null,
+     "response": {
+       "message": "Hola Raúl"
+     },
+     "executionTime": 1572632880399
+   }
+   ````
+
+   
+
 ## Filosofia de uso
 
 Monitoring Logger se originó pensando en ser un soporte para la trazabilidad de arquitecturas de N-Capas puediendo extraer información vital y a tiempo real de las distintas capas del sistema con intención de realizar mejoras proactivas en función de los resultados extraidos.Esta libreria no es un recambio a la colocación de loggers o impresión, es mas *se recomienda el uso intensivo y paralelo a ello*.
