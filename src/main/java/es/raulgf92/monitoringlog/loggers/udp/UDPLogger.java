@@ -61,7 +61,7 @@ public class UDPLogger implements MonitorLogger {
 		}
 	}
 
-	private void sendInfo(byte[] buf) throws IOException {
+	protected void sendInfo(byte[] buf) throws IOException {
 		DatagramPacket packet = new DatagramPacket(buf, buf.length, this.address, configuration.getPort().intValue());
 		socket.send(packet);
 	}

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.aspectj.lang.JoinPoint;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -17,11 +18,16 @@ public class FunctionInfo {
 	private Throwable error;
 	private Object response;
 	private Date executionTime;
+	private FunctionInfoState state;
 
-	public FunctionInfo() {
+	protected FunctionInfo() {}
+	
+	public FunctionInfo(FunctionInfoState state) {
+		this.state = state;
 	}
 
-	public FunctionInfo(String identificator, Date executionTime, JoinPoint joinPoint) {
+	public FunctionInfo(FunctionInfoState state, String identificator, Date executionTime, JoinPoint joinPoint) {
+		this(state);
 		this.identificator = identificator;
 		this.executionTime = executionTime;
 		this.signature = new FunctionSignature(joinPoint.getSignature());
@@ -29,13 +35,13 @@ public class FunctionInfo {
 		this.args = joinPoint.getArgs();
 	}
 
-	public FunctionInfo(String identificator, Date executionTime, JoinPoint joinPoint, Throwable e) {
-		this(identificator, executionTime, joinPoint);
+	public FunctionInfo(FunctionInfoState state, String identificator, Date executionTime, JoinPoint joinPoint, Throwable e) {
+		this(state, identificator, executionTime, joinPoint);
 		this.error = e;
 	}
 
-	public FunctionInfo(String identificator, Date executionTime, JoinPoint joinPoint, Object response) {
-		this(identificator, executionTime, joinPoint);
+	public FunctionInfo(FunctionInfoState state, String identificator, Date executionTime, JoinPoint joinPoint, Object response) {
+		this(state, identificator, executionTime, joinPoint);
 		this.response = response;
 	}
 
@@ -102,5 +108,16 @@ public class FunctionInfo {
 	public void setExecutionTime(Date executionTime) {
 		this.executionTime = executionTime;
 	}
+	
+	public FunctionInfoState getState() {
+		return state;
+	}
 
+	public void setState(FunctionInfoState state) {
+		this.state = state;
+	}
+
+	public enum FunctionInfoState {
+		START,FINAL,ERROR
+	}
 }

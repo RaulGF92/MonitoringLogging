@@ -15,7 +15,10 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import es.raulgf92.monitoringlog.MonitoringLogConfiguration;
 import es.raulgf92.monitoringlog.interceptors.thread.LoggerThreadPool;
+import es.raulgf92.monitoringlog.model.FunctionErrorInfo;
+import es.raulgf92.monitoringlog.model.FunctionFinalInfo;
 import es.raulgf92.monitoringlog.model.FunctionInfo;
+import es.raulgf92.monitoringlog.model.FunctionStartInfo;
 
 @Aspect
 @Configuration
@@ -31,7 +34,6 @@ public class MethodInterceptorLog {
 	
 	@PostConstruct
 	public void init() {
-		//TODO: Hacer esto por configuración
 		this.cache = new ConcurrentLinkedQueue<FunctionInfo>();
 		this.pool = new LoggerThreadPool(
 				configuration.getNumberThread(), 
@@ -43,6 +45,17 @@ public class MethodInterceptorLog {
 	// TODO: CAMBIAR EL PATH PARA CUANDO TENGA UNO FIJO
 	@Around("execution(public * ((@es.raulgf92.monitoringlog.annotations.Logged *)+).*(..))")
 	public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
+		return this.executeLog(joinPoint);
+	}
+	
+	// TODO: CAMBIAR EL PATH PARA CUANDO TENGA UNO FIJO
+	@Around("execution(public * ((@es.raulgf92.monitoringlog.annotations.monitoringlogui.MonitoringLogUI *)+).*(..))")
+	public Object logExecutionTimeUI(ProceedingJoinPoint joinPoint) throws Throwable {
+		return this.executeLog(joinPoint);
+	}
+	
+
+	private Object executeLog(ProceedingJoinPoint joinPoint) throws Throwable {
 		Object response = null;
 		String identificator = this.getUniqueIdentificator();
 		this.handleBegan(identificator, joinPoint);
@@ -70,18 +83,18 @@ public class MethodInterceptorLog {
 	 * @param joinPoint
 	 */
 	private void handleBegan(String identificator, ProceedingJoinPoint joinPoint) {
-		FunctionInfo info = new FunctionInfo(identificator, new Date(), joinPoint);
+		FunctionInfo info = new FunctionStartInfo(identificator, new Date(), joinPoint);
 		this.cache.add(info);
 	}
 
 	private void handleEnd(String identificator, ProceedingJoinPoint joinPoint, Object response) {
-		FunctionInfo info = new FunctionInfo(identificator, new Date(), joinPoint, response);
+		FunctionInfo info = new FunctionFinalInfo(identificator, new Date(), joinPoint, response);
 		this.cache.add(info);
 
 	}
 
 	private void handleException(String identificator, ProceedingJoinPoint joinPoint, Exception e) {
-		FunctionInfo info = new FunctionInfo(identificator, new Date(), joinPoint, e);
+		FunctionInfo info = new FunctionErrorInfo(identificator, new Date(), joinPoint, e);
 		this.cache.add(info);
 
 	}
