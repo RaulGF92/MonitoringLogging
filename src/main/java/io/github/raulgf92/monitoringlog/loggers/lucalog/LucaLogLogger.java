@@ -27,6 +27,9 @@ public class LucaLogLogger extends UDPLogger {
 		
 	}
 
+	public static LucaLogBuilder builder() {
+		return new LucaLogBuilder();
+	}
 	
 	@Override
 	public void printInfo(FunctionInfo info) {
