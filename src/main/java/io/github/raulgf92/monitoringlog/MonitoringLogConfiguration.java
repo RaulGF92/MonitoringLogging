@@ -1,9 +1,11 @@
-package es.raulgf92.monitoringlog;
+package io.github.raulgf92.monitoringlog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import es.raulgf92.monitoringlog.loggers.SystemLogger;
+import io.github.raulgf92.monitoringlog.loggers.SystemLogger;
+
+
 
 public class MonitoringLogConfiguration {
 
