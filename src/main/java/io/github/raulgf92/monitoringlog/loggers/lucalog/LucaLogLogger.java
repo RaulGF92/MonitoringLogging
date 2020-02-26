@@ -25,54 +25,17 @@ public class LucaLogLogger extends UDPLogger {
 		logger.info("Put applicationIdentificator on LucaLog for show responses on real time");
 		logger.info("------------------------------------------------------------------------------------------------------");
 		
+		this.setParser((info,state) -> {
+			FunctionInfoUI _info = new FunctionInfoUI(info);
+			_info.setApplicationName(this.applicationIdentificator);
+			return this.functionInfoToJsonString(_info);
+		});
 	}
 
 	public static LucaLogBuilder builder() {
 		return new LucaLogBuilder();
 	}
-	
-	@Override
-	public void printInfo(FunctionInfo info) {
-		FunctionInfoUI _info = new FunctionInfoUI(info);
-		_info.setApplicationName(this.applicationIdentificator);
-		String infoParse = this.functionInfoToJsonString(_info);
 		
-		try {
-			super.sendInfo(infoParse.getBytes());
-		} catch (IOException e) {
-			logger.info("Was happend a error send it UDP packet", e);
-		}
-	}
-
-	@Override
-	public void printError(FunctionInfo info) {
-		FunctionInfoUI _info = new FunctionInfoUI(info);
-		_info.setApplicationName(this.applicationIdentificator);
-		String infoParse = this.functionInfoToJsonString(_info);
-		try {
-			super.sendInfo(infoParse.getBytes());
-		} catch (IOException e) {
-			logger.info("Was happend a error send it UDP packet", e);
-		}
-	}
-
-	
-	/**
-	 * Sobrescribimos la función printInfo para añadirle el nombre de aplicación
-	 */
-	@Override
-	public void printInfo(FunctionInfo info, Function<FunctionInfo, String> parser) {
-		throw new RuntimeException("Not Implemented");
-	}
-
-	/**
-	 * Sobrescribimos la función printInfo para añadirle el nombre de aplicación
-	 */
-	@Override
-	public void printError(FunctionInfo info, Function<FunctionInfo, String> parser) {
-		throw new RuntimeException("Not Implemented");
-	}
-	
 	private String generateApplicationIdentificator(String applicationName) {
 		UUID uuid = UUID.randomUUID();
 		return String.format("%s__#%s#",applicationName, uuid.toString());

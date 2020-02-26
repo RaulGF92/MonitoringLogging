@@ -74,8 +74,10 @@ public class ThreadHandler extends Thread {
 		for (MonitorLogger monitorsLogger : loggers) {
 			if (info.getError() != null) {
 				monitorsLogger.printError(info);
+			} else if(info.getResponse() != null) {
+				monitorsLogger.printFinal(info);
 			} else {
-				monitorsLogger.printInfo(info);
+				monitorsLogger.printStart(info);
 			}
 		}
 	}

@@ -6,6 +6,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.slf4j.Logger;
@@ -22,6 +23,7 @@ public class UDPLogger implements MonitorLogger {
 	private InetAddress address;
 
 	Logger logger = LoggerFactory.getLogger(UDPLogger.class);
+	private BiFunction<FunctionInfo, MonitorLoggerState, String> parser;
 
 	public UDPLogger(UDPConfiguration configuration) throws SocketException, UnknownHostException {
 		this.configuration = configuration;
@@ -31,39 +33,51 @@ public class UDPLogger implements MonitorLogger {
 				configuration.getUrl(), configuration.getPort()));
 	}
 
-	@Override
-	public void printInfo(FunctionInfo info) {
-		this.printInfo(info, (FunctionInfo parameter) -> this.functionInfoToJsonString(info));
-	}
-
-	@Override
-	public void printError(FunctionInfo info) {
-		this.printError(info, (FunctionInfo parameter) -> this.functionInfoToJsonString(info));
-	}
-
-	@Override
-	public void printInfo(FunctionInfo info, Function<FunctionInfo, String> parser) {
-		String infoParse = parser.apply(info);
-		try {
-			this.sendInfo(infoParse.getBytes());
-		} catch (IOException e) {
-			logger.info("Was happend a error send it UDP packet", e);
-		}
-	}
-
-	@Override
-	public void printError(FunctionInfo info, Function<FunctionInfo, String> parser) {
-		String infoParse = parser.apply(info);
-		try {
-			this.sendInfo(infoParse.getBytes());
-		} catch (IOException e) {
-			logger.info("Was happend a error send it UDP packet", e);
-		}
-	}
-
 	protected void sendInfo(byte[] buf) throws IOException {
 		DatagramPacket packet = new DatagramPacket(buf, buf.length, this.address, configuration.getPort().intValue());
 		socket.send(packet);
 	}
 
+
+	@Override
+	public void printStart(FunctionInfo info) {
+		String infoParse = this.parser != null? this.parser.apply(info, MonitorLoggerState.START): this.functionInfoToJsonString(info);
+		try {
+			this.sendInfo(infoParse.getBytes());
+		} catch (IOException e) {
+			logger.info("Was happend a error send it UDP packet", e);
+		}
+	}
+
+
+	@Override
+	public void printFinal(FunctionInfo info) {
+		String infoParse = this.parser != null? this.parser.apply(info, MonitorLoggerState.FINAL): this.functionInfoToJsonString(info);
+		try {
+			this.sendInfo(infoParse.getBytes());
+		} catch (IOException e) {
+			logger.info("Was happend a error send it UDP packet", e);
+		}
+	}
+
+
+	@Override
+	public void printError(FunctionInfo info) {
+		String infoParse = this.parser != null? this.parser.apply(info, MonitorLoggerState.ERROR): this.functionInfoToJsonString(info);
+		try {
+			this.sendInfo(infoParse.getBytes());
+		} catch (IOException e) {
+			logger.info("Was happend a error send it UDP packet", e);
+		}
+	}
+
+	/* GETTERS & SETTERS */
+	
+	public BiFunction<FunctionInfo, MonitorLoggerState, String> getParser() {
+		return parser;
+	}
+
+	public void setParser(BiFunction<FunctionInfo, MonitorLoggerState, String> parser) {
+		this.parser = parser;
+	}
 }

@@ -9,6 +9,10 @@ import io.github.raulgf92.monitoringlog.loggers.SystemLogger;
 
 public class MonitoringLogConfiguration {
 
+	public MonitoringLogConfiguration() {
+		this.monitors = new ArrayList<MonitorLogger>();
+	}
+	
 	private List<MonitorLogger> monitors;
 	private Integer numberThread = 5;
 	private Long maxTimeSleep = 5 * 60 * 1000L; // 5 min
@@ -47,14 +51,16 @@ public class MonitoringLogConfiguration {
 		private List<MonitorLogger> monitors;
 		private int numberThread = 5;
 		private Long maxTimeSleep = 5 * 60 * 1000L; // 5 mins
-
+		private SystemLogger systemLogger;
+		
 		public Builder() {
+			this.systemLogger = new SystemLogger(); 
 			this.monitors = new ArrayList<MonitorLogger>();
-			this.monitors.add(new SystemLogger());
 		}
 
 		public MonitoringLogConfiguration build() {
 			MonitoringLogConfiguration response = new MonitoringLogConfiguration();
+			this.monitors.add(this.systemLogger);
 			response.setMonitors(this.monitors);
 			response.setNumberThread(this.numberThread);
 			response.setMaxTimeSleep(this.maxTimeSleep);
@@ -82,6 +88,10 @@ public class MonitoringLogConfiguration {
 		public Builder setMaxTimeSleep(Long maxTimeSleep) {
 			this.maxTimeSleep = maxTimeSleep;
 			return this;
+		}
+		
+		public SystemLogger getSystemLogger() {
+			return this.systemLogger;
 		}
 	}
 

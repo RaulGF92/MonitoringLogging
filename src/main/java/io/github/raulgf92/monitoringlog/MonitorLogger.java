@@ -12,14 +12,16 @@ import io.github.raulgf92.monitoringlog.model.FunctionInfo;
 
 public interface MonitorLogger {
 
-	void printInfo(FunctionInfo info);
+	public enum MonitorLoggerState {
+		START,FINAL,ERROR
+	}
+	
+	void printStart(FunctionInfo info);
 
+	void printFinal(FunctionInfo info);
+	
 	void printError(FunctionInfo info);
-
-	void printInfo(FunctionInfo info, Function<FunctionInfo, String> parser);
-
-	void printError(FunctionInfo info, Function<FunctionInfo, String> parser);
-
+	
     default String functionInfoToJsonString(FunctionInfo info) 
     { 
 		String response;

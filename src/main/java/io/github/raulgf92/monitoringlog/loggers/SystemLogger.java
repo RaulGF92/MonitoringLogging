@@ -1,6 +1,6 @@
 package io.github.raulgf92.monitoringlog.loggers;
 
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,26 +12,89 @@ public class SystemLogger implements MonitorLogger {
 
 	Logger logger = LoggerFactory.getLogger(SystemLogger.class);
 	
+	private BiFunction<FunctionInfo,MonitorLoggerState, String> parserToMsg;
+	
+	public enum SystemLoggerLevel {
+		DEBUG, INFO, ERROR
+	}
+	
+	private SystemLoggerLevel startLogLevel = SystemLoggerLevel.INFO;
+	private SystemLoggerLevel finalLogLevel = SystemLoggerLevel.INFO;
+	private SystemLoggerLevel errorLogLevel = SystemLoggerLevel.ERROR;
+	
 	@Override
-	public void printInfo(FunctionInfo info) {
-		this.printInfo(info, (FunctionInfo parameter) -> this.functionInfoToJsonString(info));
+	public void printStart(FunctionInfo info) {
+		String infoParse = this.parserToMsg != null? this.parserToMsg.apply(info, MonitorLoggerState.START): this.functionInfoToJsonString(info);
+		this.printInfo(infoParse, this.startLogLevel);
 	}
 
+
+	@Override
+	public void printFinal(FunctionInfo info) {
+		String infoParse = this.parserToMsg != null? this.parserToMsg.apply(info, MonitorLoggerState.FINAL): this.functionInfoToJsonString(info);
+		this.printInfo(infoParse, this.finalLogLevel);
+	}
+	
 	@Override
 	public void printError(FunctionInfo info) {
-		this.printError(info, (FunctionInfo parameter) -> this.functionInfoToJsonString(info));
+		String infoParse = this.parserToMsg != null? this.parserToMsg.apply(info, MonitorLoggerState.FINAL): this.functionInfoToJsonString(info);
+		this.printInfo(infoParse, this.errorLogLevel);
+	}
+	
+	/*	FUNCIONES AUXILIARES */
+	
+	private void printInfo(String infoParse, SystemLoggerLevel logLevel) {
+		if(SystemLoggerLevel.INFO.equals(logLevel)) {
+			logger.info(infoParse);
+		}
+		
+		if(SystemLoggerLevel.ERROR.equals(logLevel)) {
+			logger.error(infoParse);
+		}
+		
+		if(SystemLoggerLevel.DEBUG.equals(logLevel)) {
+			logger.debug(infoParse);
+		}
 	}
 
-	@Override
-	public void printInfo(FunctionInfo info, Function<FunctionInfo, String> parser) {
-		String infoParse = parser.apply(info);
-		logger.info(infoParse);
+	/*	GETTERS & SETTERS */
+	
+	public BiFunction<FunctionInfo,MonitorLoggerState, String> getParserToMsg() {
+		return this.parserToMsg;
 	}
 
-	@Override
-	public void printError(FunctionInfo info, Function<FunctionInfo, String> parser) {
-		String infoParse = parser.apply(info);
-		logger.info(infoParse);
+	public void setParserToMsg(BiFunction<FunctionInfo,MonitorLoggerState, String> parserToMsg) {
+		this.parserToMsg = parserToMsg;
+	}
+
+
+	public SystemLoggerLevel getStartLogLevel() {
+		return startLogLevel;
+	}
+
+
+	public void setStartLogLevel(SystemLoggerLevel startLogLevel) {
+		this.startLogLevel = startLogLevel;
+	}
+
+
+	public SystemLoggerLevel getFinalLogLevel() {
+		return finalLogLevel;
+	}
+
+
+	public void setFinalLogLevel(SystemLoggerLevel finalLogLevel) {
+		this.finalLogLevel = finalLogLevel;
+	}
+
+
+	public SystemLoggerLevel getErrorLogLevel() {
+		return errorLogLevel;
+	}
+
+
+	public void setErrorLogLevel(SystemLoggerLevel errorLogLevel) {
+		this.errorLogLevel = errorLogLevel;
 	}
 
 }
