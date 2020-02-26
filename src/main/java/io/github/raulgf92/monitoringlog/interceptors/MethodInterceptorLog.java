@@ -44,13 +44,13 @@ public class MethodInterceptorLog {
 	}
 	
 	// TODO: CAMBIAR EL PATH PARA CUANDO TENGA UNO FIJO
-	@Around("execution(public * ((@es.raulgf92.monitoringlog.annotations.Logged *)+).*(..))")
+	@Around("execution(public * ((@io.github.raulgf92.monitoringlog.annotations.Logged *)+).*(..))")
 	public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
 		return this.executeLog(joinPoint);
 	}
 	
 	// TODO: CAMBIAR EL PATH PARA CUANDO TENGA UNO FIJO
-	@Around("execution(public * ((@es.raulgf92.monitoringlog.annotations.monitoringlogui.MonitoringLogUI *)+).*(..))")
+	@Around("execution(public * ((@io.github.raulgf92.monitoringlog.annotations.lucalog.LucaLog *)+).*(..))")
 	public Object logExecutionTimeUI(ProceedingJoinPoint joinPoint) throws Throwable {
 		return this.executeLog(joinPoint);
 	}

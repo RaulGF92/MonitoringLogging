@@ -22,7 +22,7 @@ public class LucaLogLogger extends UDPLogger {
 		this.applicationIdentificator = this.generateApplicationIdentificator(configuration.applicationName);
 		logger.info("------------------------------------------------------------------------------------------------------");
 		logger.info("The LucaLog-Logger was created, the application was loaded with name " + applicationIdentificator);
-		logger.info("Put applicationIdentificator on MonitoringLogUI for show responses on real time");
+		logger.info("Put applicationIdentificator on LucaLog for show responses on real time");
 		logger.info("------------------------------------------------------------------------------------------------------");
 		
 	}
