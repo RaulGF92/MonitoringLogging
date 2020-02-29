@@ -14,7 +14,17 @@
 		</developer>
 	</developers>
 	<url>https://github.com/RaulGF92/MonitoringLogging</url>
-
+	
+	<licenses>
+		<license><url>https://github.com/RaulGF92/MonitoringLogging/blob/master/MIT-LICENSE</url></license>
+	</licenses>
+	
+	<scm>
+        <connection>scm:git:git@github.com:RaulGF92/MonitoringLogging.git</connection>
+        <developerConnection>scm:git:ssh://github.com/RaulGF92/MonitoringLogging.git</developerConnection>
+        <url>https://github.com/RaulGF92/MonitoringLogging/tree/master</url>
+    </scm>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
